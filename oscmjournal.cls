@@ -39,13 +39,14 @@
 
 % Apply the layout format
 \if@preprint
-    \LoadClass[a4paper,onecolumn]{article} % Load for preprint
+    \LoadClass[a4paper,onecolumn, twoside]{article} % Load for preprint
 \else
     \LoadClass[a4paper,twocolumn, twoside]{article} % Load for final
 \fi
 
 
 %% Layout parameters
+\setlength{\headheight}{32pt}
 \setlength{\topmargin}{-2cm}
 \setlength{\textheight}{25.5cm}
 \setlength{\textwidth}{17.6cm}
@@ -96,7 +97,7 @@
 
 
 
-
+\usepackage[utf8]{inputenc}
 \usepackage{times}
 
 %% Section formatting
