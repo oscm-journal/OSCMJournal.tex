@@ -29,7 +29,7 @@
 \newcommand{\JournalVolume}{00}
 \newcommand{\JournalNumber}{0}
 \newcommand{\JournalYear}{2023}
-\newcommand{\RunningHeader}{Arief, \emph{et al.}: OSCM \LaTeX~Template}
+\newcommand{\RunningHeader}{OSCM, \emph{et al.}: OSCM \LaTeX~Template}
 \newcommand{\FirstPage}{000}
 \newcommand{\LastPage}{000}
 \newcommand{\ISSN}{1979-3561}
@@ -63,7 +63,7 @@
 
 \if@preprint
     \usepackage{lineno}
-    \renewcommand{\normalsize}{\fontsize{12}{15}\fontfamily{ptm}\selectfont}
+    \renewcommand{\normalsize}{\fontsize{10}{12}\fontfamily{ptm}\selectfont}
     \linenumbers
     \renewcommand{\maketitle}{%    
         \begin{center}
@@ -115,11 +115,21 @@
     \@startsection{subsection}{2}{0pt}{-1ex plus -0.5ex minus -.2ex}%
     {0.5ex plus .2ex}{\fontsize{12}{0}\fontseries{b}\fontshape{it}\selectfont\itshape}%
 }
-\renewcommand{\subsubsection}{%
-    \vspace{0.25em}
-    \@startsection{subsubsection}{3}{0pt}{-0.5ex plus -0.2ex minus -.1ex}%
-    {0.2ex plus .1ex}{\fontsize{10}{0}\fontseries{m}\fontshape{it}\selectfont}%
-}
+\if@preprint
+    \renewcommand{\subsubsection}{%
+        \vspace{0.25em}
+        \@startsection{subsubsection}{3}{0pt}{-0.5ex plus -0.2ex minus -.1ex}%
+        {0.2ex plus .1ex}{\fontsize{10}{0}\fontseries{m}\fontshape{it}\selectfont}%
+    }
+\else
+    \renewcommand{\subsubsection}{%
+        \vspace{0.25em}
+        \@startsection{subsubsection}{3}{0pt}{-0.5ex plus -0.2ex minus -.1ex}%
+        {0.2ex plus .1ex}{\fontsize{10}{0}\fontseries{m}\fontshape{it}\selectfont}%
+    }
+\fi
+
+
 
 %% Abstract environment
 \usepackage{setspace}
@@ -169,7 +179,7 @@
 %% Figure and table caption formatting
 \RequirePackage{caption}
 \DeclareCaptionLabelSeparator{period}{\hspace*{1ex}}
-\captionsetup[figure]{font=normal,labelfont={bf},labelsep=period,justification=raggedright,singlelinecheck=false}
+\captionsetup[figure]{font=normal,labelfont={bf},labelsep=period,justification=centering,singlelinecheck=false}
 \captionsetup[table]{position=top,labelsep=period,font=normal,labelfont={bf},justification=raggedright,skip=2pt,singlelinecheck=false}
 
 \newcommand{\biographies}{%
@@ -184,3 +194,53 @@
     \end{small}
     \vspace{1em}
 }
+
+\usepackage[style=apa]{biblatex}
+\DefineBibliographyStrings{english}{%
+    andothers = {\em et\addabbrvspace al\adddot}
+}
+
+\renewcommand{\labelnamepunct}{\addspace}
+
+\DeclareDelimFormat[bib]{finalnamedelim}{%
+  \ifthenelse{\value{listcount}>\maxprtauth}
+    {}
+    {\ifthenelse{\value{liststop}>2}
+       {\finalandcomma\addspace\bibstring{and}\space}
+       {\addspace\bibstring{and}\space}}}
+
+\DeclareDelimFormat[bib]{finalnamedelim:apa:family-given}{%
+  \ifthenelse{\value{listcount}>\maxprtauth}
+    {}
+    {\ifthenelse{\ifcurrentname{groupauthor}\AND%
+                 \value{liststop}=2}
+     {\addspace\bibstring{and}\space}
+     {\finalandcomma\addspace\bibstring{and}\space}}}
+
+\usepackage{xpatch}
+\xpatchbibdriver{article}
+  {\usebibmacro{title}%
+   \newunit}
+  {\usebibmacro{title}%
+   \printunit{\addcomma\space}}
+  {}
+  {}
+
+\AtEveryBibitem{\clearfield{number}}
+
+\DeclareFieldFormat[article]{volume}{\apanum{#1}}
+
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\space}%
+  \iffieldundef{series}
+    {}
+    {\newunit
+     \printfield{series}%
+     \setunit{\addspace}}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \usebibmacro{issue}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}
