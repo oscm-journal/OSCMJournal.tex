@@ -1,6 +1,6 @@
 # OSCM Journal LaTeX Class File
 
-This README provides guidance on how to use the OSCM Journal LaTeX class file for preparing manuscripts for the[Operations and Supply Chain Management Journal](https://journal.oscm-forum.org/).
+This README provides guidance on how to use the OSCM Journal LaTeX class file for preparing manuscripts for the [Operations and Supply Chain Management Journal](https://journal.oscm-forum.org/).
 
 ## Overview
 
